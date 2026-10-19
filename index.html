@@ -73,233 +73,54 @@
     </footer>
 
     <script>
-        // قائمة الألعاب الـ 166 كاملة بدون أسعار
+        // قائمة الألعاب مرتبطة بالصور الصحيحة (من 63019.jpg إلى 63078.jpg) بدون أي أسعار
         const games = [
-            { id: 1, name: "Assassin's Creed Rogue", image: "ac_rogue.jpg" },
-            { id: 2, name: "Assassin's Creed Origins", image: "ac_origins.jpg" },
-            { id: 3, name: "Assassin's Creed The Ezio Collection", image: "ac_ezio.jpg" },
-            { id: 4, name: "Assassin's Creed III Remastered", image: "ac_3.jpg" },
-            { id: 5, name: "Assassin's Creed Syndicate", image: "ac_syndicate.jpg" },
-            { id: 6, name: "Alan Wake Remastered", image: "alan_wake.jpg" },
-            { id: 7, name: "A Way Out", image: "a_way_out.jpg" },
-            { id: 8, name: "Assassin's Creed IV Black Flag", image: "ac_black_flag.jpg" },
-            { id: 9, name: "Assassin's Creed Unity", image: "ac_unity.jpg" },
-            { id: 10, name: "Assassin's Creed Mirage", image: "ac_mirage.jpg" },
-            { id: 11, name: "Assassin's Creed Odyssey", image: "ac_odyssey.jpg" },
-            { id: 12, name: "Batman: Arkham Knight", image: "batman_arkham.jpg" },
-            { id: 13, name: "Assassin's Creed Valhalla", image: "ac_valhalla.jpg" },
-            { id: 14, name: "Battlefield Hardline", image: "bf_hardline.jpg" },
-            { id: 15, name: "Battlefield 1", image: "bf_1.jpg" },
-            { id: 16, name: "Battlefield V", image: "bf_5.jpg" },
-            { id: 17, name: "Call of Duty: Black Ops 6", image: "cod_bo6.jpg" },
-            { id: 18, name: "Call of Duty: Black Ops III", image: "cod_bo3.jpg" },
-            { id: 19, name: "Battlefield 4", image: "bf_4.jpg" },
-            { id: 20, name: "Black", image: "black_game.jpg" },
-            { id: 21, name: "Cyberpunk 2077", image: "cyberpunk.jpg" },
-            { id: 22, name: "Crash Bandicoot 4", image: "crash_4.jpg" },
-            { id: 23, name: "Crash Team Racing Nitro-Fueled", image: "ctr.jpg" },
-            { id: 24, name: "Dark Souls II: Scholar of the First Sin", image: "darksouls_2.jpg" },
-            { id: 25, name: "Dark Souls Remastered", image: "darksouls_1.jpg" },
-            { id: 26, name: "Dying Light 2: Stay Human", image: "dying_light_2.jpg" },
-            { id: 27, name: "EA Sports FC 25", image: "fc25.jpg" },
-            { id: 28, name: "Far Cry Primal", image: "farcry_primal.jpg" },
-            { id: 29, name: "Far Cry 5", image: "farcry_5.jpg" },
-            { id: 30, name: "Elden Ring", image: "elden_ring.jpg" },
-            { id: 31, name: "Far Cry 6", image: "farcry_6.jpg" },
-            { id: 32, name: "PES 2027 Patch", image: "pes2027.jpg" },
-            { id: 33, name: "Evil West", image: "evil_west.jpg" },
-            { id: 34, name: "GTA Vice City", image: "gta_vice_city.jpg" },
-            { id: 35, name: "Immortals Fenyx Rising", image: "immortals.jpg" },
-            { id: 36, name: "Hellblade: Senua's Sacrifice", image: "hellblade.jpg" },
-            { id: 37, name: "Hitman", image: "hitman.jpg" },
-            { id: 38, name: "It Takes Two", image: "it_takes_two.jpg" },
-            { id: 39, name: "Jump Force", image: "jump_force.jpg" },
-            { id: 40, name: "Hogwarts Legacy", image: "hogwarts_legacy.jpg" },
-            { id: 41, name: "Horizon Forbidden West", image: "horizon_forbidden_west.jpg" },
-            { id: 42, name: "Horizon Zero Dawn", image: "horizon_zero_dawn.jpg" },
-            { id: 43, name: "Jurassic World Evolution 2", image: "jurassic_world_2.jpg" },
-            { id: 44, name: "Dark Souls III", image: "darksouls_3.jpg" },
-            { id: 45, name: "Death Stranding", image: "death_stranding.jpg" },
-            { id: 46, name: "Dead Island 2", image: "dead_island_2.jpg" },
-            { id: 47, name: "Devil May Cry 5", image: "dmc_5.jpg" },
-            { id: 48, name: "Days Gone", image: "days_gone.jpg" },
-            { id: 49, name: "Dragon Ball Xenoverse 2", image: "db_xenoverse_2.jpg" },
-            { id: 50, name: "Demon Slayer", image: "demon_slayer.jpg" },
-            { id: 51, name: "Detroit: Become Human", image: "detroit.jpg" },
-            { id: 52, name: "Dragon Ball Z: Kakarot", image: "dbz_kakarot.jpg" },
-            { id: 53, name: "Dying Light", image: "dying_light_1.jpg" },
-            { id: 54, name: "Far Cry New Dawn", image: "farcry_new_dawn.jpg" },
-            { id: 55, name: "Just Cause 4", image: "just_cause_4.jpg" },
-            { id: 56, name: "Ghost of Tsushima Director's Cut", image: "ghost_of_tsushima.jpg" },
-            { id: 57, name: "Just Cause 3", image: "just_cause_3.jpg" },
-            { id: 58, name: "God of War (2018)", image: "god_of_war_4.jpg" },
-            { id: 59, name: "Kena: Bridge of Spirits", image: "kena.jpg" },
-            { id: 60, name: "God Hand", image: "god_hand.jpg" },
-            { id: 61, name: "Knack 2", image: "knack_2.jpg" },
-            { id: 62, name: "LEGO 2K Drive", image: "lego_2k_drive.jpg" },
-            { id: 63, name: "God of War III Remastered", image: "god_of_war_3.jpg" },
-            { id: 64, name: "GTA Online: The Kortz Center Heist", image: "gta_online_heist.jpg" },
-            { id: 65, name: "Lies of P", image: "lies_of_p.jpg" },
-            { id: 66, name: "Little Nightmares Enhanced Edition", image: "little_nightmares.jpg" },
-            { id: 67, name: "GTA III", image: "gta_3.jpg" },
-            { id: 68, name: "LEGO Worlds", image: "lego_worlds.jpg" },
-            { id: 69, name: "GTA San Andreas", image: "gta_san_andreas.jpg" },
-            { id: 70, name: "LEGO Star Wars: The Skywalker Saga", image: "lego_star_wars.jpg" },
-            { id: 71, name: "LEGO DC Super-Villains", image: "lego_dc_villains.jpg" },
-            { id: 72, name: "Gran Turismo 7", image: "gran_turismo_7.jpg" },
-            { id: 73, name: "God of War Ragnarök: Valhalla", image: "gow_ragnarok_valhalla.jpg" },
-            { id: 74, name: "Prey Digital Deluxe", image: "prey.jpg" },
-            { id: 75, name: "Prince of Persia: The Lost Crown", image: "prince_of_persia.jpg" },
-            { id: 76, name: "Ratchet & Clank", image: "ratchet_and_clank.jpg" },
-            { id: 77, name: "Resident Evil 4", image: "re_4.jpg" },
-            { id: 78, name: "Resident Evil 2", image: "re_2.jpg" },
-            { id: 79, name: "Rayman Legends", image: "rayman_legends.jpg" },
-            { id: 80, name: "Resident Evil 5", image: "re_5.jpg" },
-            { id: 81, name: "Resident Evil 3", image: "re_3.jpg" },
-            { id: 82, name: "Red Dead Redemption II (باللغة العربية)", image: "rdr_2_ar.jpg" },
-            { id: 83, name: "Red Dead Redemption", image: "rdr_1.jpg" },
-            { id: 84, name: "Need for Speed Rivals", image: "nfs_rivals.jpg" },
-            { id: 85, name: "NieR: Automata", image: "nier_automata.jpg" },
-            { id: 86, name: "Ninja Gaiden 3: Razor's Edge", image: "ninja_gaiden_3.jpg" },
-            { id: 87, name: "PES 2018", image: "pes_2018.jpg" },
-            { id: 88, name: "Ninja Gaiden Sigma 2", image: "ninja_gaiden_sigma_2.jpg" },
-            { id: 89, name: "Ninja Gaiden Sigma", image: "ninja_gaiden_sigma.jpg" },
-            { id: 90, name: "One Piece: Burning Blood", image: "one_piece_burning_blood.jpg" },
-            { id: 91, name: "PES 2025 Season Update", image: "pes_2025.jpg" },
-            { id: 92, name: "PES 2025 Daeng Patch", image: "pes_2025_patch.jpg" },
-            { id: 93, name: "PES 2026 Summer Edition", image: "pes_2026.jpg" },
-            { id: 94, name: "Resident Evil 6", image: "re_6.jpg" },
-            { id: 95, name: "Rocket League", image: "rocket_league.jpg" },
-            { id: 96, name: "Resident Evil Village", image: "re_village.jpg" },
-            { id: 97, name: "Rogue Trip: Vacation 2012", image: "rogue_trip.jpg" },
-            { id: 98, name: "Middle-earth: Shadow of War", image: "shadow_of_war.jpg" },
-            { id: 99, name: "Sekiro: Shadows Die Twice", image: "sekiro.jpg" },
-            { id: 100, name: "Shadow of the Colossus", image: "shadow_of_the_colossus.jpg" },
-            { id: 101, name: "Resident Evil 7: Biohazard", image: "re_7.jpg" },
-            { id: 102, name: "Sifu", image: "sifu.jpg" },
-            { id: 103, name: "Sackboy: A Big Adventure", image: "sackboy.jpg" },
-            { id: 104, name: "Wolfenstein: The New Order", image: "wolfenstein.jpg" },
-            { id: 105, name: "Wo Long: Fallen Dynasty", image: "wo_long.jpg" },
-            { id: 106, name: "WWE 2K25 New Wave DLC", image: "wwe_2k25.jpg" },
-            { id: 107, name: "Marvel's Avengers (Update 1.12)", image: "avengers.jpg" },
-            { id: 108, name: "Little Nightmares II", image: "little_nightmares_2.jpg" },
-            { id: 109, name: "Mafia III", image: "mafia_3.jpg" },
-            { id: 110, name: "Mafia: Definitive Edition", image: "mafia_1_def.jpg" },
-            { id: 111, name: "Marvel's Guardians of the Galaxy", image: "guardians_of_the_galaxy.jpg" },
-            { id: 112, name: "Mass Effect Legendary Edition", image: "mass_effect.jpg" },
-            { id: 113, name: "Mafia II", image: "mafia_2.jpg" },
-            { id: 114, name: "Metal Gear Solid V: The Phantom Pain", image: "mgsv.jpg" },
-            { id: 115, name: "Metal Slug 3", image: "metal_slug_3.jpg" },
-            { id: 116, name: "Metro Exodus", image: "metro_exodus.jpg" },
-            { id: 117, name: "The Witcher 3: Wild Hunt", image: "witcher_3.jpg" },
-            { id: 118, name: "Teenage Mutant Ninja Turtles: Mutants Unleashed", image: "tmnt_mutants.jpg" },
-            { id: 119, name: "The Callisto Protocol", image: "callisto_protocol.jpg" },
-            { id: 120, name: "The Order: 1886", image: "the_order_1886.jpg" },
-            { id: 121, name: "The Last Guardian", image: "last_guardian.jpg" },
-            { id: 122, name: "The Dark Pictures Anthology: House of Ashes", image: "house_of_ashes.jpg" },
-            { id: 123, name: "The Last of Us Part II", image: "tlou_2.jpg" },
-            { id: 124, name: "The Evil Within 2", image: "evil_within_2.jpg" },
-            { id: 125, name: "Tom and Jerry", image: "tom_and_jerry.jpg" },
-            { id: 126, name: "The Last of Us", image: "tlou_1.jpg" },
-            { id: 127, name: "Tomb Raider: Definitive Edition", image: "tomb_raider_de.jpg" },
-            { id: 128, name: "Rise of the Tomb Raider", image: "rise_of_tomb_raider.jpg" },
-            { id: 129, name: "Uncharted 4: A Thief's End", image: "uncharted_4.jpg" },
-            { id: 130, name: "Shadow of the Tomb Raider", image: "shadow_of_tomb_raider.jpg" },
-            { id: 131, name: "Uncharted 3: Drake's Deception", image: "uncharted_3.jpg" },
-            { id: 132, name: "Uncharted: The Lost Legacy", image: "uncharted_lost_legacy.jpg" },
-            { id: 133, name: "Watch Dogs 2", image: "watch_dogs_2.jpg" },
-            { id: 134, name: "Twisted Metal 2", image: "twisted_metal_2.jpg" },
-            { id: 135, name: "Watch Dogs: Legion", image: "watch_dogs_legion.jpg" },
-            { id: 136, name: "Unknown 9: Awakening", image: "unknown_9.jpg" },
-            { id: 137, name: "Sinner: Sacrifice for Redemption", image: "sinner.jpg" },
-            { id: 138, name: "Sleeping Dogs: Definitive Edition", image: "sleeping_dogs.jpg" },
-            { id: 139, name: "Sniper Ghost Warrior 3", image: "sniper_ghost_warrior_3.jpg" },
-            { id: 140, name: "Sniper Elite V2", image: "sniper_elite_v2.jpg" },
-            { id: 141, name: "Sniper Elite 4", image: "sniper_elite_4.jpg" },
-            { id: 142, name: "Sniper Elite 5", image: "sniper_elite_5.jpg" },
-            { id: 143, name: "Sniper Ghost Warrior Contracts", image: "sniper_contracts.jpg" },
-            { id: 144, name: "SnowRunner", image: "snowrunner.jpg" },
-            { id: 145, name: "Sniper Elite 3: Afrika", image: "sniper_elite_3.jpg" },
-            { id: 146, name: "Sniper Elite: Resistance", image: "sniper_resistance.jpg" },
-            { id: 147, name: "Sonic Superstars", image: "sonic_superstars.jpg" },
-            { id: 148, name: "Sonic Forces", image: "sonic_forces.jpg" },
-            { id: 149, name: "Spider-Man (Black Suit)", image: "spider_man_black.jpg" },
-            { id: 150, name: "Spider-Man (Classic)", image: "spider_man_classic.jpg" },
-            { id: 151, name: "Stray", image: "stray.jpg" },
-            { id: 152, name: "Spyro Reignited Trilogy", image: "spyro.jpg" },
-            { id: 153, name: "Star Wars Battlefront II", image: "star_wars_battlefront_2.jpg" },
-            { id: 154, name: "SpongeBob SquarePants: Battle for Bikini Bottom – Rehydrated", image: "spongebob.jpg" },
-            { id: 155, name: "Tekken 7", image: "tekken_7.jpg" },
-            { id: 156, name: "Stranger of Paradise: Final Fantasy Origin", image: "stranger_of_paradise.jpg" },
-            { id: 157, name: "Minecraft", image: "minecraft.jpg" },
-            { id: 158, name: "Metro Redux", image: "metro_redux.jpg" },
-            { id: 159, name: "Monster Hunter: World", image: "monster_hunter_world.jpg" },
-            { id: 160, name: "Minecraft Dungeons: Ultimate Edition", image: "minecraft_dungeons.jpg" },
-            { id: 161, name: "Naruto", image: "naruto.jpg" },
-            { id: 162, name: "Mortal Kombat XL", image: "mortal_kombat_xl.jpg" },
-            { id: 163, name: "Mortal Kombat 11", image: "mortal_kombat_11.jpg" },
-            { id: 164, name: "Naruto x Boruto Ultimate Ninja Storm Connections", image: "naruto_storm_connections.jpg" },
-            { id: 165, name: "Need for Speed Payback", image: "nfs_payback.jpg" },
-            { id: 166, name: "Need for Speed Heat", image: "nfs_heat.jpg" }
-        ];
-
-        let cart = [];
-
-        function renderGames() {
-            const grid = document.getElementById('games-grid');
-            grid.innerHTML = games.map(game => `
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition overflow-hidden flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 overflow-hidden bg-gray-100">
-                            <img src="${game.image}" alt="${game.name}" class="w-full h-full object-cover">
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-gray-800 text-sm line-clamp-2">${game.name}</h3>
-                        </div>
-                    </div>
-                    <div class="p-4 pt-0">
-                        <button onclick="addToCart(${game.id})" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center space-x-1 space-x-reverse">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>إضافة للسلة</span>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function addToCart(gameId) {
-            const game = games.find(g => g.id === gameId);
-            const existingItem = cart.find(item => item.id === gameId);
-
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ ...game, quantity: 1 });
-            }
-
-            updateCartUI();
-            toggleCart();
-        }
-
-        function updateCartUI() {
-            const countElem = document.getElementById('cart-count');
-            const itemsElem = document.getElementById('cart-items');
-
-            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-            countElem.innerText = totalCount;
-
-            if (cart.length === 0) {
-                itemsElem.innerHTML = `<p class="text-gray-400 text-center py-10">السلة فارغة حالياً</p>`;
-                return;
-            }
-
-            itemsElem.innerHTML = cart.map(item => `
-                <div class="flex items-center justify-between bg-gray-50 p-3 rounded-xl border border-gray-100">
-                    <div class="flex items-center space-x-3 space-x-reverse">
-                        <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg">
-                        <div>
-                            <h4 class="font-bold text-sm text-gray-800">${item.name}</h4>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-2 space-x-reverse">
-                        <button onclick="change
+            { id: 1, name: "Marvel's Avengers (Update 1.12)", image: "63019.jpg" },
+            { id: 2, name: "Little Nightmares II", image: "63020.jpg" },
+            { id: 3, name: "Mafia III", image: "63021.jpg" },
+            { id: 4, name: "Mafia: Definitive Edition", image: "63022.jpg" },
+            { id: 5, name: "Marvel's Guardians of the Galaxy", image: "63023.jpg" },
+            { id: 6, name: "Mass Effect Legendary Edition", image: "63024.jpg" },
+            { id: 7, name: "Mafia II", image: "63025.jpg" },
+            { id: 8, name: "Metal Gear Solid V: The Phantom Pain", image: "63026.jpg" },
+            { id: 9, name: "Metal Slug 3", image: "63027.jpg" },
+            { id: 10, name: "Metro Exodus", image: "63028.jpg" },
+            { id: 11, name: "The Dark Pictures Anthology: House of Ashes", image: "63029.jpg" },
+            { id: 12, name: "The Last of Us Part II", image: "63030.jpg" },
+            { id: 13, name: "The Evil Within 2", image: "63031.jpg" },
+            { id: 14, name: "Tom and Jerry", image: "63032.jpg" },
+            { id: 15, name: "The Last of Us", image: "63033.jpg" },
+            { id: 16, name: "The Witcher 3: Wild Hunt", image: "63034.jpg" },
+            { id: 17, name: "Teenage Mutant Ninja Turtles: Mutants Unleashed", image: "63035.jpg" },
+            { id: 18, name: "The Callisto Protocol", image: "63036.jpg" },
+            { id: 19, name: "The Order: 1886", image: "63037.jpg" },
+            { id: 20, name: "The Last Guardian", image: "63038.jpg" },
+            { id: 21, name: "Tomb Raider: Definitive Edition", image: "63039.jpg" },
+            { id: 22, name: "Rise of the Tomb Raider", image: "63040.jpg" },
+            { id: 23, name: "Uncharted 4: A Thief's End", image: "63041.jpg" },
+            { id: 24, name: "Shadow of the Tomb Raider", image: "63042.jpg" },
+            { id: 25, name: "Uncharted 3: Drake's Deception", image: "63043.jpg" },
+            { id: 26, name: "Uncharted: The Lost Legacy", image: "63044.jpg" },
+            { id: 27, name: "Watch Dogs 2", image: "63045.jpg" },
+            { id: 28, name: "Twisted Metal 2", image: "63046.jpg" },
+            { id: 29, name: "Watch Dogs: Legion", image: "63047.jpg" },
+            { id: 30, name: "Unknown 9: Awakening", image: "63048.jpg" },
+            { id: 31, name: "Sinner: Sacrifice for Redemption", image: "63049.jpg" },
+            { id: 32, name: "Sleeping Dogs: Definitive Edition", image: "63050.jpg" },
+            { id: 33, name: "Sniper Ghost Warrior 3", image: "63051.jpg" },
+            { id: 34, name: "Sniper Elite V2", image: "63052.jpg" },
+            { id: 35, name: "Sniper Elite 4", image: "63053.jpg" },
+            { id: 36, name: "Sniper Elite 5", image: "63054.jpg" },
+            { id: 37, name: "Sniper Ghost Warrior Contracts", image: "63055.jpg" },
+            { id: 38, name: "SnowRunner", image: "63056.jpg" },
+            { id: 39, name: "Sniper Elite 3: Afrika", image: "63057.jpg" },
+            { id: 40, name: "Sniper Elite: Resistance", image: "63058.jpg" },
+            { id: 41, name: "Sonic Superstars", image: "63059.jpg" },
+            { id: 42, name: "Sonic Forces", image: "63060.jpg" },
+            { id: 43, name: "Spider-Man (Black Suit)", image: "63061.jpg" },
+            { id: 44, name: "Spider-Man (Classic)", image: "63062.jpg" },
+            { id: 45, name: "Stray", image: "63063.jpg" },
+            { id: 46, name: "Spyro Reignited Trilogy", image: "63064.jpg" },
+            { id: 47, name: "Star Wars Battlefront II", image: "63065.jpg" },
+            { id: 48, name: "SpongeBob SquarePants: Battle for Bikini Bottom – Rehydrated", image: "63066.jpg" },
+            { id: 49, name: "Tekken 7", image: "
