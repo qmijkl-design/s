@@ -18,7 +18,7 @@
                     <h1 class="text-lg font-bold text-gray-900">متجر ألعاب PS4</h1>
                 </div>
             </div>
-            <button onclick="toggleCart()" class="relative bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 space-x-reverse">
+            <button onclick="toggleCart()" class="relative bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 space-x-reverse cursor-pointer">
                 <i class="fa-solid fa-cart-shopping text-blue-600"></i>
                 <span>السلة</span>
                 <span id="cart-count" class="bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
@@ -35,10 +35,10 @@
         <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col p-6 overflow-y-auto">
             <div class="flex justify-between items-center border-b pb-4 mb-4">
                 <h3 class="text-lg font-bold">سلة الطلبات</h3>
-                <button onclick="toggleCart()" class="text-xl">&times;</button>
+                <button onclick="toggleCart()" class="text-xl cursor-pointer">&times;</button>
             </div>
             <div id="cart-items" class="flex-grow space-y-4"></div>
-            <button onclick="sendToWhatsApp()" class="w-full bg-emerald-600 text-white font-bold py-3 px-4 rounded-xl mt-4">إرسال الطلب عبر الواتساب</button>
+            <button onclick="sendToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl mt-4 transition cursor-pointer">إرسال الطلب عبر الواتساب</button>
         </div>
     </div>
 
@@ -90,7 +90,7 @@
             { id: 44, name: "Spider-Man (Classic)", image: "63062.jpg" },
             { id: 45, name: "Stray", image: "63063.jpg" },
             { id: 46, name: "Spyro Reignited Trilogy", image: "63064.jpg" },
-            { id: 47, name: "Star Wars Battlefront II", image: "63065.jpg" },
+            { id: 47, name: "Star Words Battlefront II", image: "63065.jpg" },
             { id: 48, name: "SpongeBob SquarePants", image: "63066.jpg" },
             { id: 49, name: "Tekken 7", image: "63067.jpg" }
         ];
@@ -100,15 +100,21 @@
         function renderGames() {
             const grid = document.getElementById('games-grid');
             grid.innerHTML = games.map(game => `
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 transition hover:shadow-md">
-                    <img src="${game.image}" alt="${game.name}" class="w-full h-48 object-cover rounded-lg mb-3 bg-gray-200">
-                    <h3 class="font-bold text-sm mb-3 h-10 overflow-hidden">${game.name}</h3>
-                    <button onclick="addToCart(${game.id})" class="w-full bg-blue-50 text-blue-600 py-2 rounded-lg font-bold hover:bg-blue-600 hover:text-white transition">إضافة للسلة</button>
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 transition hover:shadow-md flex flex-col justify-between">
+                    <div>
+                        <div class="w-full h-48 bg-gray-100 rounded-lg mb-3 overflow-hidden flex items-center justify-center">
+                            <img src="${game.image}" alt="${game.name}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400?text=PS4+Game';">
+                        </div>
+                        <h3 class="font-bold text-sm mb-3 text-gray-800 line-clamp-2">${game.name}</h3>
+                    </div>
+                    <button onclick="addToCart(${game.id})" class="w-full bg-blue-50 text-blue-600 py-2 rounded-lg font-bold hover:bg-blue-600 hover:text-white transition cursor-pointer">إضافة للسلة</button>
                 </div>
             `).join('');
         }
 
-        function toggleCart() { document.getElementById('cart-modal').classList.toggle('hidden'); }
+        function toggleCart() { 
+            document.getElementById('cart-modal').classList.toggle('hidden'); 
+        }
 
         function addToCart(id) {
             const game = games.find(g => g.id === id);
@@ -121,16 +127,21 @@
             const items = document.getElementById('cart-items');
             items.innerHTML = cart.length > 0 ? cart.map((g, i) => `
                 <div class="flex justify-between items-center border-b pb-2">
-                    <span class="text-sm">${g.name}</span>
-                    <button onclick="cart.splice(${i}, 1); updateCartUI()" class="text-red-500 text-xs">حذف</button>
+                    <span class="text-sm font-medium text-gray-700">${g.name}</span>
+                    <button onclick="removeFromCart(${i})" class="text-red-500 hover:text-red-700 text-xs cursor-pointer">حذف</button>
                 </div>
             `).join('') : '<p class="text-gray-400 text-center py-10">السلة فارغة حالياً</p>';
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
         }
 
         function sendToWhatsApp() {
             if(cart.length === 0) return alert('السلة فارغة!');
             const phone = "9647726541533"; 
-            const message = "مرحباً، أود طلب الألعاب التالية: " + cart.map(g => g.name).join('، ');
+            const message = "مرحباً، أود طلب الألعاب التالية:\n" + cart.map((g, index) => `${index + 1}. ${g.name}`).join('\n');
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
