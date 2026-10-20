@@ -6,199 +6,73 @@
     <title>متجر أبو يونس للألعاب</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }</style>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    </style>
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col">
 
-    <!-- رأس التطبيق -->
-    <header class="bg-gray-800 shadow-md sticky top-0 z-40 border-b border-gray-700">
+    <!-- رأس التطبيق الواضح جداً -->
+    <header class="bg-gray-900 border-b border-blue-600/30 sticky top-0 z-40 shadow-xl">
         <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3 space-x-reverse">
-                <div class="bg-blue-600 text-white p-2.5 rounded-xl shadow-lg"><i class="fa-solid fa-gamepad text-xl"></i></div>
+                <div class="bg-blue-600 text-white p-3 rounded-2xl shadow-lg shadow-blue-600/30">
+                    <i class="fa-solid fa-gamepad text-2xl"></i>
+                </div>
                 <div>
-                    <h1 class="text-xl font-bold text-white">متجر أبو يونس</h1>
-                    <p class="text-xs text-gray-400">أفضل ألعاب بلايستيشن بجميع الإصدارات</p>
+                    <!-- اسم المتجر بشكل كبير وواضح -->
+                    <h1 class="text-2xl md:text-3xl font-black text-white tracking-wide">
+                        متجر <span class="text-blue-500">أبو يونس</span> للألعاب
+                    </h1>
+                    <p class="text-xs text-gray-400">قسم ألعاب بلايستيشن 4 (PS4)</p>
                 </div>
             </div>
-            <button onclick="toggleCart()" class="relative bg-gray-700 hover:bg-gray-600 text-white px-4 py-2.5 rounded-xl font-medium transition flex items-center space-x-2 space-x-reverse cursor-pointer">
-                <i class="fa-solid fa-cart-shopping text-blue-400"></i>
+            
+            <!-- زر السلة -->
+            <button onclick="toggleCart()" class="relative bg-gray-800 hover:bg-gray-700 text-white px-5 py-2.5 rounded-xl font-bold transition flex items-center space-x-2 space-x-reverse border border-gray-700 cursor-pointer">
+                <i class="fa-solid fa-cart-shopping text-blue-400 text-lg"></i>
                 <span>السلة</span>
-                <span id="cart-count" class="bg-blue-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                <span id="cart-count" class="bg-blue-600 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center font-extrabold shadow-md">0</span>
             </button>
         </div>
     </header>
 
+    <!-- شريط ترحيبي بارز باسم أبو يونس -->
+    <section class="bg-gradient-to-r from-blue-900/40 via-gray-900 to-blue-900/40 border-b border-gray-800 py-6 text-center">
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-1">أهلاً بكم في متجر أبو يونس</h2>
+            <p class="text-sm text-gray-300">اختر ألعابك المفضلة لبلايستيشن 4 واطلبها مباشرة عبر الواتساب بنقرة واحدة</p>
+        </div>
+    </section>
+
     <!-- المحتوى الرئيسي -->
     <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
-        
-        <!-- أزرار التصنيفات (التبويبات) -->
-        <div class="flex flex-wrap gap-3 mb-8 justify-center">
-            <button onclick="filterCategory('all')" id="btn-all" class="cat-btn px-5 py-2.5 rounded-xl font-bold bg-blue-600 text-white transition cursor-pointer shadow-md">الكل</button>
-            <button onclick="filterCategory('ps4')" id="btn-ps4" class="cat-btn px-5 py-2.5 rounded-xl font-bold bg-gray-800 text-gray-300 hover:bg-gray-700 transition cursor-pointer">ألعاب بلي 4 (PS4)</button>
-            <button onclick="filterCategory('ps3')" id="btn-ps3" class="cat-btn px-5 py-2.5 rounded-xl font-bold bg-gray-800 text-gray-300 hover:bg-gray-700 transition cursor-pointer">ألعاب بلي 3 (PS3)</button>
-            <button onclick="filterCategory('ps2')" id="btn-ps2" class="cat-btn px-5 py-2.5 rounded-xl font-bold bg-gray-800 text-gray-300 hover:bg-gray-700 transition cursor-pointer">ألعاب بلي 2 (PS2)</button>
-        </div>
-
         <!-- شبكة عرض الألعاب -->
         <div id="games-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
     </main>
 
     <!-- نافذة السلة الجانبية -->
-    <div id="cart-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex justify-end">
-        <div class="bg-gray-800 w-full max-w-md h-full shadow-2xl flex flex-col p-6 overflow-y-auto border-r border-gray-700">
-            <div class="flex justify-between items-center border-b border-gray-700 pb-4 mb-4">
-                <h3 class="text-lg font-bold text-white">سلة الطلبات</h3>
-                <button onclick="toggleCart()" class="text-xl text-gray-400 hover:text-white cursor-pointer">&times;</button>
+    <div id="cart-modal" class="fixed inset-0 bg-black/80 z-50 hidden flex justify-end backdrop-blur-sm">
+        <div class="bg-gray-900 w-full max-w-md h-full shadow-2xl flex flex-col p-6 overflow-y-auto border-r border-gray-800">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-blue-500"></i>
+                    سلة طلبات متجر أبو يونس
+                </h3>
+                <button onclick="toggleCart()" class="text-2xl text-gray-400 hover:text-white cursor-pointer">&times;</button>
             </div>
-            <div id="cart-items" class="flex-grow space-y-4"></div>
-            <button onclick="sendToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl mt-4 transition cursor-pointer shadow-lg flex items-center justify-center space-x-2 space-x-reverse">
-                <i class="fa-brands fa-whatsapp text-xl"></i>
-                <span>إرسال الطلب عبر الواتساب</span>
+            <div id="cart-items" class="flex-grow space-y-3"></div>
+            <button onclick="sendToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl mt-4 transition cursor-pointer shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 space-x-reverse">
+                <i class="fa-brands fa-whatsapp text-2xl"></i>
+                <span>إرسال الطلب إلى أبو يونس عبر الواتساب</span>
             </button>
         </div>
     </div>
 
     <!-- تذييل الصفحة -->
-    <footer class="bg-gray-800 border-t border-gray-700 text-center py-4 text-sm text-gray-400">
-        جميع الحقوق محفوظة &copy; متجر أبو يونس 2026
+    <footer class="bg-gray-900 border-t border-gray-800 text-center py-4 text-sm text-gray-400">
+        جميع الحقوق محفوظة &copy; <strong>متجر أبو يونس للألعاب</strong> 2026
     </footer>
 
     <script>
-        // قاعدة بيانات الألعاب مصنفة حسب المنصة (ps4, ps3, ps2)
-        const games = [
-            // ألعاب جديدة (PS4)
-            { id: 1, name: "Assassin's Creed Unity", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
-            { id: 2, name: "Assassin's Creed Mirage", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t8h.jpg" },
-            
-            // قائمة ألعاب PS4
-            { id: 3, name: "Dark Souls II: Scholar of the First Sin", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1whz.jpg" },
-            { id: 4, name: "Dark Souls Remastered", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1whz.jpg" },
-            { id: 5, name: "Call of Duty: Black Ops Cold War", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqw.jpg" },
-            { id: 6, name: "Call of Duty: Ghosts", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnt.jpg" },
-            { id: 7, name: "Call of Duty: Infinite Warfare", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnv.jpg" },
-            { id: 8, name: "Call of Duty: Modern Warfare 3", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vns.jpg" },
-            { id: 9, name: "Call of Duty: Modern Warfare", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4ivq.jpg" },
-            { id: 10, name: "Call of Duty: Modern Warfare 2", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcu.jpg" },
-            { id: 11, name: "Call of Duty: Modern Warfare II", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4ivq.jpg" },
-            { id: 12, name: "Call of Duty: Modern Warfare III", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8352.jpg" },
-            { id: 13, name: "Red Dead Redemption 2 (بالعربية)", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q4p.jpg" },
-            { id: 14, name: "God of War", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1ivq.jpg" },
-            { id: 15, name: "The Last of Us Part II", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqw.jpg" },
-            { id: 16, name: "Spider-Man", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vni.jpg" },
-            { id: 17, name: "Elden Ring", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4w9e.jpg" },
-            { id: 18, name: "Ghost of Tsushima: Director's Cut", category: "ps4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.jpg" },
-
-            // قائمة ألعاب PS3
-            { id: 101, name: "Grand Theft Auto V (PS3)", category: "ps3", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2wqi.jpg" },
-            { id: 102, name: "Call of Duty: Black Ops II", category: "ps3", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqw.jpg" },
-            { id: 103, name: "The Last of Us (PS3)", category: "ps3", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7f.jpg" },
-            { id: 104, name: "Uncharted 3: Drake's Deception", category: "ps3", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co257q.jpg" },
-            { id: 105, name: "God of War III", category: "ps3", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcu.jpg" },
-            { id: 106, name: "Batman: Arkham City", category: "ps3", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1v9x.jpg" },
-
-            // قائمة ألعاب PS2
-            { id: 201, name: "Black (PS2)", category: "ps2", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7f.jpg" },
-            { id: 202, name: "Grand Theft Auto: San Andreas (PS2)", category: "ps2", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1tnm.jpg" },
-            { id: 203, name: "God Hand (PS2)", category: "ps2", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcw.jpg" },
-            { id: 204, name: "Resident Evil 4 (PS2)", category: "ps2", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5v7v.jpg" },
-            { id: 205, name: "Twisted Metal 2 (PS2)", category: "ps2", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2q1p.jpg" }
-        ];
-
-        let currentCategory = 'all';
-        let cart = [];
-
-        function filterCategory(category) {
-            currentCategory = category;
-            
-            // تحديث تصميم الأزرار النشطة
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.remove('bg-blue-600', 'text-white', 'shadow-md');
-                btn.classList.add('bg-gray-800', 'text-gray-300');
-            });
-            
-            const activeBtn = document.getElementById(`btn-${category}`);
-            if(activeBtn) {
-                activeBtn.classList.remove('bg-gray-800', 'text-gray-300');
-                activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow-md');
-            }
-            
-            renderGames();
-        }
-
-        function renderGames() {
-            const grid = document.getElementById('games-grid');
-            const filteredGames = currentCategory === 'all' 
-                ? games 
-                : games.filter(g => g.category === currentCategory);
-
-            grid.innerHTML = filteredGames.map(game => {
-                const inCart = cart.some(item => item.id === game.id);
-                return `
-                <div class="bg-gray-800 p-4 rounded-xl shadow-md border border-gray-700 transition hover:border-blue-500 flex flex-col justify-between">
-                    <div>
-                        <div class="w-full h-52 bg-gray-900 rounded-lg mb-3 overflow-hidden flex items-center justify-center">
-                            <img src="${game.image}" alt="${game.name}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400?text=Game+Cover';">
-                        </div>
-                        <span class="text-xs px-2 py-1 bg-gray-700 text-blue-400 rounded-md uppercase font-semibold">${game.category}</span>
-                        <h3 class="font-bold text-sm mt-2 mb-3 text-white line-clamp-2 h-10">${game.name}</h3>
-                    </div>
-                    <button 
-                        onclick="addToCart(${game.id})" 
-                        ${inCart ? 'disabled' : ''}
-                        class="w-full py-2 rounded-lg font-bold transition ${
-                            inCart 
-                            ? 'bg-gray-700 text-gray-400 cursor-not-allowed' 
-                            : 'bg-blue-600 hover:bg-blue-500 text-white cursor-pointer shadow'
-                        }">
-                        ${inCart ? 'مضافة بالسلة' : 'إضافة للسلة'}
-                    </button>
-                </div>
-            `;
-            }).join('');
-        }
-
-        function toggleCart() { 
-            document.getElementById('cart-modal').classList.toggle('hidden'); 
-        }
-
-        function addToCart(id) {
-            const game = games.find(g => g.id === id);
-            if (!cart.some(item => item.id === id)) {
-                cart.push(game);
-                updateCartUI();
-                renderGames(); 
-            }
-        }
-
-        function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            const items = document.getElementById('cart-items');
-            items.innerHTML = cart.length > 0 ? cart.map((g) => `
-                <div class="flex justify-between items-center border-b border-gray-700 pb-2">
-                    <div>
-                        <span class="text-sm font-medium text-white block">${g.name}</span>
-                        <span class="text-xs text-blue-400 uppercase">${g.category}</span>
-                    </div>
-                    <button onclick="removeFromCart(${g.id})" class="text-red-400 hover:text-red-300 text-xs cursor-pointer px-2 py-1 bg-gray-700 rounded">حذف</button>
-                </div>
-            `).join('') : '<p class="text-gray-400 text-center py-10">السلة فارغة حالياً</p>';
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCartUI();
-            renderGames(); 
-        }
-
-        function sendToWhatsApp() {
-            if(cart.length === 0) return alert('السلة فارغة!');
-            const phone = "9647726541533"; 
-            const message = "مرحباً متجر أبو يونس، أود طلب الألعاب التالية:\n" + cart.map((g, index) => `${index + 1}. ${g.name} (${g.category.toUpperCase()})`).join('\n');
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-        }
-
-        // تشغيل العرض الأولي
-        renderGames();
-    </script>
-</body>
-</html>
+        // قائمة ألعاب PS4 بالصور المطلوبة
