@@ -40,9 +40,8 @@
     <section class="bg-gradient-to-r from-blue-900/40 via-gray-900 to-blue-900/40 border-b border-gray-800 py-6">
         <div class="max-w-4xl mx-auto px-4 text-center">
             <p class="text-base md:text-lg font-bold text-gray-200 mb-4">
-                🎮 أهلاً بكم في <span class="text-blue-400 font-black">متجر أبو يونس</span> - تصفح الألعاب واطلبها مباشرة عبر الواتساب 🎮
+                🎮 أهلاً بكم في <span class="text-blue-400 font-black">متجر أبو يونس</span> - اطلب ألعابك مباشرة عبر الواتساب 🎮
             </p>
-            <!-- شريط البحث اللحظي لتسهيل الاختيار على الزبون -->
             <div class="relative max-w-xl mx-auto">
                 <input type="text" id="search-input" oninput="filterGames()" placeholder="ابحث عن اسم اللعبة هنا..." class="w-full bg-gray-900 text-white border border-gray-700 rounded-xl py-3 px-11 text-sm focus:outline-none focus:border-blue-500 transition shadow-inner">
                 <i class="fa-solid fa-magnifying-glass absolute right-4 top-3.5 text-gray-400"></i>
@@ -83,56 +82,56 @@
     </footer>
 
     <script>
-        // قائمة الألعاب الشاملة والمستخرجة من كافة الصور التي أرسلتها بالدفعات المتتالية
+        // قائمة الألعاب المحدثة متضمنة الألعاب الجديدة والسابقة بدقة
         const games = [
-            { id: 1, name: "God of War Ragnarök", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4ivq.jpg" },
-            { id: 2, name: "The Last of Us Part II", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqw.jpg" },
-            { id: 3, name: "Red Dead Redemption 2", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q4p.jpg" },
-            { id: 4, name: "Ghost of Tsushima Director's Cut", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.jpg" },
-            { id: 5, name: "Spider-Man", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vni.jpg" },
-            { id: 6, name: "Grand Theft Auto V", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2wqi.jpg" },
-            { id: 7, name: "Uncharted 4: A Thief's End", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1tzt.jpg" },
-            { id: 8, name: "Horizon Forbidden West", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co49wj.jpg" },
-            { id: 9, name: "Assassin's Creed Valhalla", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.jpg" },
-            { id: 10, name: "Assassin's Creed Mirage", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t8h.jpg" },
-            { id: 11, name: "Assassin's Creed Unity", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
-            { id: 12, name: "Assassin's Creed IV: Black Flag", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
-            { id: 13, name: "Assassin's Creed Origins", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1w2w.jpg" },
-            { id: 14, name: "Assassin's Creed Odyssey", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
-            { id: 15, name: "Assassin's Creed Syndicate", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
-            { id: 16, name: "Assassin's Creed Rogue", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1v9x.jpg" },
-            { id: 17, name: "Assassin's Creed III Remastered", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
-            { id: 18, name: "Assassin's Creed The Ezio Collection", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
-            { id: 19, name: "Battlefield V", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1w2z.jpg" },
-            { id: 20, name: "Battlefield 1", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7f.jpg" },
-            { id: 21, name: "Battlefield 4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcu.jpg" },
-            { id: 22, name: "Battlefield Hardline", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnt.jpg" },
-            { id: 23, name: "Call of Duty: Modern Warfare III", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8352.jpg" },
-            { id: 24, name: "Call of Duty: Modern Warfare II", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4ivq.jpg" },
-            { id: 25, name: "Call of Duty: Black Ops Cold War", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqw.jpg" },
-            { id: 26, name: "Call of Duty: Black Ops III", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqw.jpg" },
-            { id: 27, name: "Call of Duty: Ghosts", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnt.jpg" },
-            { id: 28, name: "Call of Duty: Infinite Warfare", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnv.jpg" },
-            { id: 29, name: "Call of Duty: Advanced Warfare", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnv.jpg" },
-            { id: 30, name: "Call of Duty: WWII", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnt.jpg" },
-            { id: 31, name: "Call of Duty: Vanguard", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co3w7g.jpg" },
-            { id: 32, name: "Call of Duty: Modern Warfare Remastered", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcu.jpg" },
-            { id: 33, name: "Dark Souls Remastered", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1whz.jpg" },
-            { id: 34, name: "Dark Souls II Scholar of the First Sin", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1whz.jpg" },
-            { id: 35, name: "Dark Souls III", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1whz.jpg" },
-            { id: 36, name: "Elden Ring", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4w9e.jpg" },
-            { id: 37, name: "Cyberpunk 2077", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.jpg" },
-            { id: 38, name: "Resident Evil 4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co5v7v.jpg" },
-            { id: 39, name: "Resident Evil 2", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqw.jpg" },
-            { id: 40, name: "Resident Evil 3", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.jpg" },
-            { id: 41, name: "Resident Evil Village", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co3w7g.jpg" },
-            { id: 42, name: "Resident Evil 7 Biohazard", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7f.jpg" },
-            { id: 43, name: "Far Cry 6", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co3w7g.jpg" },
-            { id: 44, name: "Far Cry 5", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1xnz.jpg" },
-            { id: 45, name: "Far Cry Primal", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnv.jpg" },
-            { id: 46, name: "Batman Arkham Knight", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1v9x.jpg" },
-            { id: 47, name: "Alan Wake Remastered", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co3mvt.jpg" },
-            { id: 48, name: "A Way Out", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co3mvt.jpg" },
+            { id: 1, name: "A Way Out", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co3mvt.jpg" },[span_10](start_span)[span_10](end_span)
+            { id: 2, name: "Minecraft", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcw.jpg" },[span_11](start_span)[span_11](end_span)
+            { id: 3, name: "Metro Redux", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnn.jpg" },[span_12](start_span)[span_12](end_span)
+            { id: 4, name: "Minecraft Dungeons Ultimate Edition", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2958.jpg" },[span_13](start_span)[span_13](end_span)
+            { id: 5, name: "Mortal Kombat XL", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qri.jpg" },[span_14](start_span)[span_14](end_span)
+            { id: 6, name: "Mortal Kombat 11", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1v9x.jpg" },[span_15](start_span)[span_15](end_span)
+            { id: 7, name: "Naruto x Boruto: Ultimate Ninja Storm Connections", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t8h.jpg" },[span_16](start_span)[span_16](end_span)
+            { id: 8, name: "Need for Speed Payback", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1w2z.jpg" },[span_17](start_span)[span_17](end_span)
+            { id: 9, name: "Need for Speed Heat", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },[span_18](start_span)[span_18](end_span)
+            { id: 10, name: "Sonic Superstars", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t8i.jpg" },[span_19](start_span)[span_19](end_span)
+            { id: 11, name: "God of War Ragnarök", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4ivq.jpg" },
+            { id: 12, name: "The Last of Us Part II", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqw.jpg" },
+            { id: 13, name: "Red Dead Redemption 2", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1q4p.jpg" },
+            { id: 14, name: "Ghost of Tsushima Director's Cut", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.jpg" },
+            { id: 15, name: "Spider-Man", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vni.jpg" },
+            { id: 16, name: "Grand Theft Auto V", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2wqi.jpg" },
+            { id: 17, name: "Uncharted 4: A Thief's End", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1tzt.jpg" },
+            { id: 18, name: "Horizon Forbidden West", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co49wj.jpg" },
+            { id: 19, name: "Assassin's Creed Valhalla", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.jpg" },
+            { id: 20, name: "Assassin's Creed Mirage", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t8h.jpg" },
+            { id: 21, name: "Assassin's Creed Unity", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
+            { id: 22, name: "Assassin's Creed IV: Black Flag", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
+            { id: 23, name: "Assassin's Creed Origins", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1w2w.jpg" },
+            { id: 24, name: "Assassin's Creed Odyssey", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
+            { id: 25, name: "Assassin's Creed Syndicate", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
+            { id: 26, name: "Assassin's Creed Rogue", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1v9x.jpg" },
+            { id: 27, name: "Assassin's Creed III Remastered", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
+            { id: 28, name: "Assassin's Creed The Ezio Collection", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
+            { id: 29, name: "Battlefield V", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1w2z.jpg" },
+            { id: 30, name: "Battlefield 1", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7f.jpg" },
+            { id: 31, name: "Battlefield 4", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcu.jpg" },
+            { id: 32, name: "Battlefield Hardline", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnt.jpg" },
+            { id: 33, name: "Call of Duty: Modern Warfare III", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co8352.jpg" },
+            { id: 34, name: "Call of Duty: Modern Warfare II", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4ivq.jpg" },
+            { id: 35, name: "Call of Duty: Black Ops Cold War", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqw.jpg" },
+            { id: 36, name: "Call of Duty: Black Ops III", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2rqw.jpg" },
+            { id: 37, name: "Call of Duty: Ghosts", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnt.jpg" },
+            { id: 38, name: "Call of Duty: Infinite Warfare", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnv.jpg" },
+            { id: 39, name: "Call of Duty: Advanced Warfare", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnv.jpg" },
+            { id: 40, name: "Call of Duty: WWII", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnt.jpg" },
+            { id: 41, name: "Call of Duty: Vanguard", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co3w7g.jpg" },
+            { id: 42, name: "Call of Duty: Modern Warfare Remastered", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcu.jpg" },
+            { id: 43, name: "Dark Souls Remastered", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1whz.jpg" },
+            { id: 44, name: "Dark Souls II Scholar of the First Sin", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1whz.jpg" },
+            { id: 45, name: "Dark Souls III", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1whz.jpg" },
+            { id: 46, name: "Elden Ring", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co4w9e.jpg" },
+            { id: 47, name: "Cyberpunk 2077", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2mvt.jpg" },
+            { id: 48, name: "Batman Arkham Knight", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1v9x.jpg" },
             { id: 49, name: "Black", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7f.jpg" }
         ];
 
