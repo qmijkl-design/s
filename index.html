@@ -28,13 +28,11 @@
             </div>
             
             <div class="flex items-center space-x-3 space-x-reverse">
-                <!-- زر فتح لوحة إضافة الألعاب -->
                 <button onclick="toggleAdminPanel()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl font-bold transition flex items-center space-x-2 space-x-reverse text-sm cursor-pointer shadow-md">
                     <i class="fa-solid fa-plus-circle"></i>
-                    <span>إدارة الألعاب والصور</span>
+                    <span>إدارة الألعاب والحفظ</span>
                 </button>
 
-                <!-- زر السلة -->
                 <button onclick="toggleCart()" class="relative bg-blue-600/20 hover:bg-blue-600/30 text-white px-4 py-2.5 rounded-xl font-bold transition flex items-center space-x-2 space-x-reverse border border-blue-500/40 cursor-pointer">
                     <i class="fa-solid fa-cart-shopping text-blue-400 text-lg"></i>
                     <span class="text-sm">السلة</span>
@@ -44,36 +42,35 @@
         </div>
     </header>
 
-    <!-- لوحة تحكم سريعة وبدون تعليق -->
+    <!-- لوحة تحكم لإدارة وحفظ واستيراد الألعاب -->
     <div id="admin-panel" class="hidden bg-gray-900 border-b border-emerald-600/50 py-6 px-4">
-        <div class="max-w-2xl mx-auto bg-gray-950 p-6 rounded-2xl border border-gray-800 shadow-2xl">
-            <div class="flex justify-between items-center mb-5 border-b border-gray-800 pb-3">
+        <div class="max-w-2xl mx-auto bg-gray-950 p-6 rounded-2xl border border-gray-800 shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
-                    <i class="fa-solid fa-bolt"></i> رفع الصور الفوري والسريع (بدون تعليق)
+                    <i class="fa-solid fa-database"></i> لوحة تحكم أبو يونس (استيراد وتصدير الحفظ)
                 </h3>
                 <button onclick="toggleAdminPanel()" class="text-gray-400 hover:text-white text-2xl cursor-pointer">&times;</button>
             </div>
 
-            <div class="mb-6 p-4 bg-gray-900 rounded-xl border border-gray-800">
-                <label class="block text-sm font-bold text-gray-200 mb-2">
-                    📁 حدد جميع الصور دفعة واحدة من الجهاز (سريع جداً):
-                </label>
+            <!-- رفع صور جديدة -->
+            <div class="p-4 bg-gray-900 rounded-xl border border-gray-800">
+                <label class="block text-sm font-bold text-gray-200 mb-2">📁 رفع صور جديدة دفعة واحدة:</label>
                 <input type="file" id="batch-file-input" multiple accept="image/*" class="block w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer mb-3">
                 <button onclick="uploadBatchFast()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition cursor-pointer text-xs">
-                    إضافة الصور المحددة بسرعة فائقة
+                    إضافة الصور المحددة للمتجر
                 </button>
             </div>
 
-            <form onsubmit="addNewGame(event)" class="space-y-4">
-                <h4 class="text-xs font-bold text-gray-400 uppercase">أو إضافة برابط صورة خارجي:</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <input type="text" id="new-game-name" placeholder="اسم اللعبة" class="bg-gray-900 text-white border border-gray-700 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-emerald-500">
-                    <input type="url" id="new-game-image" placeholder="رابط الصورة" class="bg-gray-900 text-white border border-gray-700 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-emerald-500">
-                </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-xl transition cursor-pointer text-xs">
-                    حفظ اللعبة
-                </button>
-            </form>
+            <!-- استيراد ملف الحفظ السابق -->
+            <div class="p-4 bg-gray-900 rounded-xl border border-gray-800">
+                <label class="block text-sm font-bold text-gray-200 mb-2">📥 استيراد ملف الحفظ (أرسل ملف الكود أو JSON هنا):</label>
+                <input type="file" id="import-file-input" accept=".json" onchange="importGameData(event)" class="block w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer">
+            </div>
+
+            <!-- زر تصدير الحفظ -->
+            <button onclick="exportCode()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl transition cursor-pointer text-sm flex items-center justify-center gap-2">
+                <i class="fa-solid fa-file-arrow-down"></i> تصدير وحفظ الألعاب (إرسالها لي لاحقاً)
+            </button>
         </div>
     </div>
 
@@ -122,14 +119,13 @@
     </footer>
 
     <script>
-        let games = [];
+        let games = JSON.parse(localStorage.getItem('abu_younis_saved_games')) || [];
         let cart = [];
 
         function toggleAdminPanel() {
             document.getElementById('admin-panel').classList.toggle('hidden');
         }
 
-        // رفع وتوليد الصور بسرعة عالية وبدون استهلاك ذاكرة أو بطء
         function uploadBatchFast() {
             const input = document.getElementById('batch-file-input');
             const files = input.files;
@@ -137,7 +133,7 @@
             if (files.length === 0) return alert('الرجاء اختيار الصور أولاً!');
 
             Array.from(files).forEach((file, idx) => {
-                const imageUrl = URL.createObjectURL(file); // إنشاء رابط سريع جداً وخفيف
+                const imageUrl = URL.createObjectURL(file);
                 const gameName = file.name.replace(/\.[^/.]+$/, ""); 
 
                 games.unshift({
@@ -147,28 +143,56 @@
                 });
             });
 
-            renderGames();
+            saveAndRender();
             input.value = '';
             toggleAdminPanel();
+            alert('تمت إضافة الصور وحفظها بنجاح!');
         }
 
-        function addNewGame(e) {
-            e.preventDefault();
-            const name = document.getElementById('new-game-name').value.trim();
-            const image = document.getElementById('new-game-image').value.trim();
-            if(!name || !image) return alert('يرجى كتابة الاسم والرابط!');
+        function importGameData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-            games.unshift({ id: Date.now(), name, image });
-            renderGames();
-            document.getElementById('new-game-name').value = '';
-            document.getElementById('new-game-image').value = '';
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedGames = JSON.parse(e.target.result);
+                    if (Array.isArray(importedGames)) {
+                        games = importedGames;
+                        saveAndRender();
+                        alert('تم استيراد الألعاب بنجاح إلى المتجر!');
+                        toggleAdminPanel();
+                    } else {
+                        alert('ملف غير صالح!');
+                    }
+                } catch (err) {
+                    alert('خطأ في قراءة الملف!');
+                }
+            };
+            reader.readAsText(file);
         }
 
         function deleteGame(id) {
             games = games.filter(g => g.id !== id);
             cart = cart.filter(c => c.id !== id);
-            renderGames();
+            saveAndRender();
             updateCartUI();
+        }
+
+        function saveAndRender() {
+            localStorage.setItem('abu_younis_saved_games', JSON.stringify(games));
+            renderGames();
+        }
+
+        function exportCode() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(games));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "abu_younis_games.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            alert('تم تحميل ملف الحفظ بنجاح! يمكنك إرساله لي متى ما أردت تحديث الكود النهائي.');
         }
 
         function renderGames(data = games) {
@@ -247,10 +271,11 @@
             filterGames(); 
         }
 
+        // إرسال روابط الصور فقط عبر الواتساب بدون أسماء الألعاب
         function sendToWhatsApp() {
             if(cart.length === 0) return alert('السلة فارغة!');
             const phone = "9647726541533"; 
-            const message = "مرحباً متجر أبو يونس، أود طلب الألعاب التالية:\n" + cart.map((g, index) => `${index + 1}. ${g.name}`).join('\n');
+            const message = "مرحباً متجر أبو يونس، أود طلب الألعاب حسب الصور التالية:\n\n" + cart.map((g, index) => `${index + 1}. ${g.image}`).join('\n\n');
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
