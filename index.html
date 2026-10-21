@@ -28,10 +28,10 @@
             </div>
             
             <div class="flex items-center space-x-3 space-x-reverse">
-                <!-- زر فتح لوحة إضافة الألعاب (خاص بك) -->
+                <!-- زر فتح لوحة إضافة الألعاب -->
                 <button onclick="toggleAdminPanel()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl font-bold transition flex items-center space-x-2 space-x-reverse text-sm cursor-pointer shadow-md">
                     <i class="fa-solid fa-plus-circle"></i>
-                    <span>إضافة لعبة</span>
+                    <span>إدارة الألعاب والصور</span>
                 </button>
 
                 <!-- زر السلة -->
@@ -44,26 +44,42 @@
         </div>
     </header>
 
-    <!-- لوحة تحكم المالك (إضافة ألعاب جديدة مباشرة) -->
+    <!-- لوحة تحكم المالك (إضافة وحذف الألعاب مباشرة) -->
     <div id="admin-panel" class="hidden bg-gray-900 border-b border-emerald-600/50 py-6 px-4">
-        <div class="max-w-xl mx-auto bg-gray-950 p-5 rounded-2xl border border-gray-800 shadow-xl">
-            <div class="flex justify-between items-center mb-4">
+        <div class="max-w-2xl mx-auto bg-gray-950 p-6 rounded-2xl border border-gray-800 shadow-2xl">
+            <div class="flex justify-between items-center mb-5 border-b border-gray-800 pb-3">
                 <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved"></i> لوحة تحكم أبو يونس (إضافة لعبة جديدة)
+                    <i class="fa-solid fa-sliders"></i> لوحة تحكم أبو يونس - إضافة صور وألعاب بسهولة
                 </h3>
-                <button onclick="toggleAdminPanel()" class="text-gray-400 hover:text-white text-xl">&times;</button>
+                <button onclick="toggleAdminPanel()" class="text-gray-400 hover:text-white text-2xl cursor-pointer">&times;</button>
             </div>
+
+            <!-- خيار رفع ملفات صور متعدّدة دفعة واحدة -->
+            <div class="mb-6 p-4 bg-gray-900 rounded-xl border border-gray-800">
+                <label class="block text-sm font-bold text-gray-200 mb-2">
+                    📁 رفع صور متعددة مباشرة من جهازك (اختيار كل الصور دفعة واحدة):
+                </label>
+                <input type="file" id="batch-file-input" multiple accept="image/*" class="block w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer mb-3">
+                <button onclick="uploadBatchImages()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition cursor-pointer text-xs">
+                    إضافة جميع الصور المحددة فوراً
+                </button>
+            </div>
+
+            <hr class="border-gray-800 my-4">
+
+            <!-- خيار إدخال مفرد بسيط -->
             <form onsubmit="addNewGame(event)" class="space-y-4">
+                <h4 class="text-xs font-bold text-gray-400 uppercase">أو إضافة لعبة منفردة برابط صورة:</h4>
                 <div>
                     <label class="block text-xs text-gray-400 mb-1">اسم اللعبة</label>
-                    <input type="text" id="new-game-name" required placeholder="مثال: God of War" class="w-full bg-gray-900 text-white border border-gray-700 rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:border-emerald-500">
+                    <input type="text" id="new-game-name" placeholder="اسم اللعبة" class="w-full bg-gray-900 text-white border border-gray-700 rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:border-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs text-gray-400 mb-1">رابط صورة الغلاف (Image URL)</label>
-                    <input type="url" id="new-game-image" required placeholder="ألصق رابط الصورة هنا..." class="w-full bg-gray-900 text-white border border-gray-700 rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs text-gray-400 mb-1">رابط صورة الغلاف</label>
+                    <input type="url" id="new-game-image" placeholder="ألصق رابط الصورة هنا..." class="w-full bg-gray-900 text-white border border-gray-700 rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:border-emerald-500">
                 </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition cursor-pointer shadow-md text-sm">
-                    حفظ وإضافة اللعبة للمتجر
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition cursor-pointer text-xs">
+                    حفظ اللعبة المنفردة
                 </button>
             </form>
         </div>
@@ -87,7 +103,7 @@
         <div id="games-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
         <div id="no-results" class="hidden text-center py-16 text-gray-400">
             <i class="fa-solid fa-circle-exclamation text-4xl mb-2 text-gray-600"></i>
-            <p class="text-lg">لم يتم العثور على ألعاب بهذا الاسم</p>
+            <p class="text-lg">لا توجد ألعاب مضافة حالياً أو لم يتم العثور على ألعاب بهذا الاسم</p>
         </div>
     </main>
 
@@ -115,49 +131,78 @@
     </footer>
 
     <script>
-        // الألعاب الأساسية (يمكنك إضافة المزيد فوراً من الزر الأخضر بالأعلى)
-        const defaultGames = [
+        // الألعاب الأولى
+        const initialGames = [
             { id: 1, name: "A Way Out", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co3mvt.jpg" },
             { id: 2, name: "Minecraft", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcw.jpg" },
             { id: 3, name: "Metro Redux", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vnn.jpg" },
-            { id: 4, name: "Minecraft Dungeons Ultimate Edition", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2958.jpg" },
-            { id: 5, name: "Mortal Kombat XL", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qri.jpg" },
-            { id: 6, name: "Mortal Kombat 11", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1v9x.jpg" },
-            { id: 7, name: "Naruto x Boruto: Ultimate Ninja Storm Connections", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t8h.jpg" },
-            { id: 8, name: "Need for Speed Payback", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1w2z.jpg" },
-            { id: 9, name: "Need for Speed Heat", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1vmy.jpg" },
-            { id: 10, name: "Sonic Superstars", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co6t8i.jpg" }
+            { id: 4, name: "Minecraft Dungeons", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co2958.jpg" },
+            { id: 5, name: "Mortal Kombat XL", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1qri.jpg" }
         ];
 
-        // جلب الألعاب من الذاكرة المحلية أو استخدام الافتراضية
-        let games = JSON.parse(localStorage.getItem('abu_younis_games')) || defaultGames;
+        let games = JSON.parse(localStorage.getItem('abu_younis_games')) || initialGames;
         let cart = [];
 
         function toggleAdminPanel() {
             document.getElementById('admin-panel').classList.toggle('hidden');
         }
 
-        function addNewGame(event) {
-            event.preventDefault();
+        // إضافة صور متعددة دفعة واحدة من الملفات
+        function uploadBatchImages() {
+            const input = document.getElementById('batch-file-input');
+            const files = input.files;
+            
+            if (files.length === 0) return alert('الرجاء اختيار صورة واحدة على الأقل!');
+
+            let loadedCount = 0;
+            Array.from(files).forEach((file, idx) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const gameName = file.name.replace(/\.[^/.]+$/, ""); // استخدام اسم الصورة كاسم للعبة
+                    games.unshift({
+                        id: Date.now() + idx,
+                        name: gameName,
+                        image: e.target.result
+                    });
+                    loadedCount++;
+
+                    if (loadedCount === files.length) {
+                        saveAndRefresh();
+                        alert(`تمت إضافة ${files.length} صورة بنجاح إلى المتجر!`);
+                        input.value = '';
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // إضافة لعبة واحدة برابط
+        function addNewGame(e) {
+            e.preventDefault();
             const name = document.getElementById('new-game-name').value.trim();
             const image = document.getElementById('new-game-image').value.trim();
+            if(!name || !image) return alert('يرجى ملء جميع الحقول!');
 
-            const newGame = {
-                id: Date.now(),
-                name: name,
-                image: image
-            };
-
-            games.unshift(newGame); // إضافة اللعبة في بداية القائمة
-            localStorage.setItem('abu_younis_games', JSON.stringify(games)); // حفظ في المتصفح
-
-            // إعادة تعيين الحقول وإغلاق اللوحة
+            games.unshift({ id: Date.now(), name, image });
+            saveAndRefresh();
             document.getElementById('new-game-name').value = '';
             document.getElementById('new-game-image').value = '';
-            toggleAdminPanel();
-            
+            alert('تمت إضافة اللعبة بنجاح!');
+        }
+
+        // حذف لعبة معينة برقم ID
+        function deleteGame(id) {
+            if (confirm('هل أنت تأكد من إزالة هذه اللعبة من المتجر؟')) {
+                games = games.filter(g => g.id !== id);
+                cart = cart.filter(c => c.id !== id);
+                saveAndRefresh();
+                updateCartUI();
+            }
+        }
+
+        function saveAndRefresh() {
+            localStorage.setItem('abu_younis_games', JSON.stringify(games));
             renderGames();
-            alert('تمت إضافة اللعبة بنجاح إلى متجرك!');
         }
 
         function renderGames(data = games) {
@@ -174,7 +219,12 @@
             grid.innerHTML = data.map(game => {
                 const inCart = cart.some(item => item.id === game.id);
                 return `
-                <div class="bg-gray-900 p-3.5 rounded-2xl shadow-lg border border-gray-800 transition hover:border-blue-500 flex flex-col justify-between">
+                <div class="bg-gray-900 p-3.5 rounded-2xl shadow-lg border border-gray-800 transition hover:border-blue-500 flex flex-col justify-between relative group">
+                    <!-- زر حذف اللعبة المضاف لك -->
+                    <button onclick="deleteGame(${game.id})" title="حذف اللعبة" class="absolute top-2 left-2 z-10 bg-red-600/80 hover:bg-red-600 text-white text-xs px-2 py-1 rounded-lg font-bold opacity-80 group-hover:opacity-100 transition cursor-pointer">
+                        <i class="fa-solid fa-trash"></i> حذف
+                    </button>
+
                     <div>
                         <div class="w-full h-52 bg-gray-950 rounded-xl mb-3 overflow-hidden flex items-center justify-center border border-gray-800/80">
                             <img src="${game.image}" alt="${game.name}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game';">
