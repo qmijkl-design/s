@@ -42,12 +42,12 @@
         </div>
     </header>
 
-    <!-- لوحة تحكم لإدارة وحفظ واستيراد الألعاب -->
+    <!-- لوحة التحكم -->
     <div id="admin-panel" class="hidden bg-gray-900 border-b border-emerald-600/50 py-6 px-4">
         <div class="max-w-2xl mx-auto bg-gray-950 p-6 rounded-2xl border border-gray-800 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
-                    <i class="fa-solid fa-database"></i> لوحة تحكم أبو يونس (استيراد وتصدير الحفظ)
+                    <i class="fa-solid fa-database"></i> إدارة وحفظ ألعاب أبو يونس
                 </h3>
                 <button onclick="toggleAdminPanel()" class="text-gray-400 hover:text-white text-2xl cursor-pointer">&times;</button>
             </div>
@@ -63,13 +63,13 @@
 
             <!-- استيراد ملف الحفظ السابق -->
             <div class="p-4 bg-gray-900 rounded-xl border border-gray-800">
-                <label class="block text-sm font-bold text-gray-200 mb-2">📥 استيراد ملف الحفظ (أرسل ملف الكود أو JSON هنا):</label>
+                <label class="block text-sm font-bold text-gray-200 mb-2">📥 استيراد ملف الحفظ (استرجاع ألعابك المحفوظة):</label>
                 <input type="file" id="import-file-input" accept=".json" onchange="importGameData(event)" class="block w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer">
             </div>
 
             <!-- زر تصدير الحفظ -->
             <button onclick="exportCode()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl transition cursor-pointer text-sm flex items-center justify-center gap-2">
-                <i class="fa-solid fa-file-arrow-down"></i> تصدير وحفظ الألعاب (إرسالها لي لاحقاً)
+                <i class="fa-solid fa-file-arrow-down"></i> تصدير وحفظ الألعاب (تحميل ملف البيانات)
             </button>
         </div>
     </div>
@@ -192,7 +192,7 @@
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
-            alert('تم تحميل ملف الحفظ بنجاح! يمكنك إرساله لي متى ما أردت تحديث الكود النهائي.');
+            alert('تم تحميل ملف الحفظ بنجاح! يمكنك إرساله لي لاحقاً لدمجه مباشرة داخل الكود.');
         }
 
         function renderGames(data = games) {
@@ -271,7 +271,6 @@
             filterGames(); 
         }
 
-        // إرسال روابط الصور فقط عبر الواتساب بدون أسماء الألعاب
         function sendToWhatsApp() {
             if(cart.length === 0) return alert('السلة فارغة!');
             const phone = "9647726541533"; 
