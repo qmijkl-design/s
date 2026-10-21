@@ -112,7 +112,7 @@
     </footer>
 
     <script>
-        // الألعاب الحديثة والمحدثة من ملفك المرفق مباشرة
+        // الألعاب والصور المحدثة بدقة وثبات تام
         const defaultGames = [
             { id: 1, name: "A Way Out", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co3mvt.jpg" },
             { id: 2, name: "Minecraft", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co1rcw.jpg" },
@@ -134,7 +134,7 @@
             { id: 18, name: "Horizon Forbidden West", image: "https://images.igdb.com/igdb/image/upload/t_cover_big/co49wj.jpg" }
         ];
 
-        let games = JSON.parse(localStorage.getItem('abu_younis_games_v2')) || defaultGames;
+        let games = JSON.parse(localStorage.getItem('abu_younis_games_v3')) || defaultGames;
         let cart = [];
 
         function toggleAdminPanel() {
@@ -169,7 +169,7 @@
         }
 
         function saveAndRender() {
-            localStorage.setItem('abu_younis_games_v2', JSON.stringify(games));
+            localStorage.setItem('abu_younis_games_v3', JSON.stringify(games));
             renderGames();
         }
 
@@ -249,7 +249,7 @@
             filterGames(); 
         }
 
-        // إرسال روابط الصور فقط عبر الواتساب بدون الأسماء عند الطلب[span_2](start_span)[span_2](end_span)
+        // إرسال روابط الصور فقط عبر الواتساب عند الطلب[span_1](start_span)[span_1](end_span)
         function sendToWhatsApp() {
             if(cart.length === 0) return alert('السلة فارغة!');
             const phone = "9647726541533"; 
