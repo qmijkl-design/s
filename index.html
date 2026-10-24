@@ -28,11 +28,6 @@
             </div>
             
             <div class="flex items-center space-x-3 space-x-reverse">
-                <button onclick="toggleAdminPanel()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl font-bold transition flex items-center space-x-2 space-x-reverse text-sm cursor-pointer shadow-md">
-                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <span>إدارة الـ 180 صورة</span>
-                </button>
-
                 <button onclick="toggleCart()" class="relative bg-blue-600/20 hover:bg-blue-600/30 text-white px-4 py-2.5 rounded-xl font-bold transition flex items-center space-x-2 space-x-reverse border border-blue-500/40 cursor-pointer">
                     <i class="fa-solid fa-cart-shopping text-blue-400 text-lg"></i>
                     <span class="text-sm">السلة</span>
@@ -41,30 +36,6 @@
             </div>
         </div>
     </header>
-
-    <!-- لوحة التحكم للرفع الجماعي الضخم -->
-    <div id="admin-panel" class="hidden bg-gray-900 border-b border-emerald-600/50 py-6 px-4">
-        <div class="max-w-xl mx-auto bg-gray-950 p-6 rounded-2xl border border-gray-800 shadow-2xl space-y-4">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
-                <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
-                    <i class="fa-solid fa-images"></i> رفع وتخزين الصور دفعة واحدة
-                </h3>
-                <button onclick="toggleAdminPanel()" class="text-gray-400 hover:text-white text-2xl cursor-pointer">&times;</button>
-            </div>
-            
-            <div class="p-4 bg-gray-900 rounded-xl border border-gray-800 space-y-3">
-                <label class="block text-xs font-bold text-gray-200">اختر الـ 180 صورة من جهازك (حدد الكل دفعة واحدة):</label>
-                <input type="file" id="batch-file-input" multiple accept="image/*" class="block w-full text-xs text-gray-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer">
-                <button onclick="uploadAllImages()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition cursor-pointer text-sm shadow-lg">
-                    حفظ وتثبيت الصور بالذاكرة الكبيرة فوراً
-                </button>
-            </div>
-
-            <button onclick="clearStore()" class="w-full bg-red-600/80 hover:bg-red-600 text-white font-bold py-2.5 rounded-xl transition text-xs cursor-pointer">
-                حذف جميع الألعاب من المتجر
-            </button>
-        </div>
-    </div>
 
     <!-- شريط البحث والترحيب -->
     <section class="bg-gradient-to-r from-blue-900/40 via-gray-900 to-blue-900/40 border-b border-gray-800 py-6">
@@ -84,7 +55,7 @@
         <div id="games-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
         <div id="no-results" class="hidden text-center py-16 text-gray-400">
             <i class="fa-solid fa-circle-exclamation text-4xl mb-2 text-gray-600"></i>
-            <p class="text-lg">لا توجد ألعاب مضافة حالياً. اضغط على زر "إدارة الـ 180 صورة" بالأعلى.</p>
+            <p class="text-lg">لم يتم العثور على ألعاب بهذا الاسم</p>
         </div>
     </main>
 
@@ -111,209 +82,4 @@
     </footer>
 
     <script>
-        let db;
-        let games = [];
-        let cart = [];
-
-        // إعداد قاعدة البيانات الداخلية الكبيرة (IndexedDB) لتقبل مئات الصور بدون امتلاء
-        const request = indexedDB.open('AbuYounisStoreDB', 1);
-
-        request.onerror = function(event) {
-            console.error("خطأ في فتح قاعدة البيانات الداخلية");
-        };
-
-        request.onupgradeneeded = function(event) {
-            db = event.target.result;
-            if (!db.objectStoreNames.contains('games')) {
-                db.createObjectStore('games', { keyPath: 'id' });
-            }
-        };
-
-        request.onsuccess = function(event) {
-            db = event.target.result;
-            loadGamesFromDB();
-        };
-
-        function loadGamesFromDB() {
-            const transaction = db.transaction(['games'], 'readonly');
-            const store = transaction.objectStore('games');
-            const request = store.getAll();
-
-            request.onsuccess = function(event) {
-                games = event.target.result || [];
-                renderGames();
-            };
-        }
-
-        function saveGameToDB(gameObj, callback) {
-            const transaction = db.transaction(['games'], 'readwrite');
-            const store = transaction.objectStore('games');
-            store.put(gameObj);
-            transaction.oncomplete = callback;
-        }
-
-        function deleteGameFromDB(id, callback) {
-            const transaction = db.transaction(['games'], 'readwrite');
-            const store = transaction.objectStore('games');
-            store.delete(id);
-            transaction.oncomplete = callback;
-        }
-
-        function clearAllDB(callback) {
-            const transaction = db.transaction(['games'], 'readwrite');
-            const store = transaction.objectStore('games');
-            store.clear();
-            transaction.oncomplete = callback;
-        }
-
-        function toggleAdminPanel() {
-            document.getElementById('admin-panel').classList.toggle('hidden');
-        }
-
-        // رفع جميع الصور دفعة واحدة وبدون مشاكل الامتلاء
-        function uploadAllImages() {
-            const input = document.getElementById('batch-file-input');
-            const files = input.files;
-            
-            if (files.length === 0) return alert('الرجاء اختيار الصور من جهازك أولاً!');
-
-            let processed = 0;
-            const total = files.length;
-            
-            alert(`جاري حفظ ${total} صورة في الذاكرة الكبيرة للمتجر، يرجى الانتظار قليلاً...`);
-
-            Array.from(files).forEach((file, idx) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const permanentImageUrl = e.target.result;
-                    const gameName = file.name.replace(/\.[^/.]+$/, ""); 
-
-                    const newGame = {
-                        id: Date.now() + idx,
-                        name: gameName,
-                        image: permanentImageUrl
-                    };
-
-                    saveGameToDB(newGame, function() {
-                        processed++;
-                        if (processed === total) {
-                            loadGamesFromDB();
-                            input.value = '';
-                            toggleAdminPanel();
-                            alert(`تمت إضافة وتثبيت الـ ${total} صورة بنجاح تام وبدون أخطاء!`);
-                        }
-                    });
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function deleteGame(id) {
-            if(confirm('هل أنت متأكد من حذف هذه اللعبة؟')) {
-                deleteGameFromDB(id, function() {
-                    games = games.filter(g => g.id !== id);
-                    cart = cart.filter(c => c.id !== id);
-                    renderGames();
-                    updateCartUI();
-                });
-            }
-        }
-
-        function clearStore() {
-            if(confirm('هل أنت متأكد من حذف جميع الألعاب نهائياً؟')) {
-                clearAllDB(function() {
-                    games = [];
-                    cart = [];
-                    renderGames();
-                    updateCartUI();
-                    alert('تم إفراغ المتجر بالكامل.');
-                });
-            }
-        }
-
-        function renderGames(data = games) {
-            const grid = document.getElementById('games-grid');
-            const noRes = document.getElementById('no-results');
-            
-            if (data.length === 0) {
-                grid.innerHTML = '';
-                noRes.classList.remove('hidden');
-                return;
-            }
-            noRes.classList.add('hidden');
-
-            grid.innerHTML = data.map(game => {
-                const inCart = cart.some(item => item.id === game.id);
-                return `
-                <div class="bg-gray-900 p-3.5 rounded-2xl shadow-lg border border-gray-800 transition hover:border-blue-500 flex flex-col justify-between relative group">
-                    <button onclick="deleteGame(${game.id})" title="حذف اللعبة" class="absolute top-2 left-2 z-10 bg-red-600/90 hover:bg-red-600 text-white text-xs px-2 py-1 rounded-lg font-bold transition cursor-pointer">
-                        <i class="fa-solid fa-trash"></i> حذف
-                    </button>
-
-                    <div>
-                        <div class="w-full h-52 bg-gray-950 rounded-xl mb-3 overflow-hidden flex items-center justify-center border border-gray-800/80">
-                            <img src="${game.image}" alt="${game.name}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game';">
-                        </div>
-                        <h3 class="font-bold text-xs md:text-sm mb-3 text-white line-clamp-2 h-9 leading-tight">${game.name}</h3>
-                    </div>
-                    <button 
-                        onclick="addToCart(${game.id})" 
-                        ${inCart ? 'disabled' : ''}
-                        class="w-full py-2 rounded-xl text-xs md:text-sm font-bold transition ${
-                            inCart 
-                            ? 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700' 
-                            : 'bg-blue-600 hover:bg-blue-500 text-white cursor-pointer shadow-md shadow-blue-600/30'
-                        }">
-                        ${inCart ? 'مضافة بالسلة' : 'إضافة للسلة'}
-                    </button>
-                </div>
-            `;
-            }).join('');
-        }
-
-        function filterGames() {
-            const query = document.getElementById('search-input').value.toLowerCase().trim();
-            const filtered = games.filter(g => g.name.toLowerCase().includes(query));
-            renderGames(filtered);
-        }
-
-        function toggleCart() { 
-            document.getElementById('cart-modal').classList.toggle('hidden'); 
-        }
-
-        function addToCart(id) {
-            const game = games.find(g => g.id === id);
-            if (!cart.some(item => item.id === id)) {
-                cart.push(game);
-                updateCartUI();
-                filterGames(); 
-            }
-        }
-
-        function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            const items = document.getElementById('cart-items');
-            items.innerHTML = cart.length > 0 ? cart.map((g) => `
-                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
-                    <span class="text-sm font-medium text-gray-200">${g.name}</span>
-                    <button onclick="removeFromCart(${g.id})" class="text-red-400 hover:text-red-300 text-xs cursor-pointer px-2.5 py-1 bg-gray-800 rounded-lg border border-gray-700">حذف</button>
-                </div>
-            `).join('') : '<p class="text-gray-500 text-center py-10">السلة فارغة حالياً</p>';
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCartUI();
-            filterGames(); 
-        }
-
-        // إرسال روابط الصور فقط عبر الواتساب عند الطلب
-        function sendToWhatsApp() {
-            if(cart.length === 0) return alert('السلة فارغة!');
-            const phone = "9647726541533"; 
-            const message = "مرحباً متجر أبو يونس، أود طلب الألعاب حسب الصور التالية:\n\n" + cart.map((g, index) => `${index + 1}. ${g.image}`).join('\n\n');
-            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
-        }
-    </script>
-</body>
-</html>
+        // جميع الصور المرفوعة على
