@@ -30,7 +30,7 @@
             <div class="flex items-center space-x-3 space-x-reverse">
                 <button onclick="toggleAdminPanel()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl font-bold transition flex items-center space-x-2 space-x-reverse text-sm cursor-pointer shadow-md">
                     <i class="fa-solid fa-plus-circle"></i>
-                    <span>إضافة لعبة جديدة</span>
+                    <span>إدارة الألعاب والحفظ</span>
                 </button>
 
                 <button onclick="toggleCart()" class="relative bg-blue-600/20 hover:bg-blue-600/30 text-white px-4 py-2.5 rounded-xl font-bold transition flex items-center space-x-2 space-x-reverse border border-blue-500/40 cursor-pointer">
@@ -42,28 +42,35 @@
         </div>
     </header>
 
-    <!-- لوحة التحكم لإضافة ألعاب جديدة -->
+    <!-- لوحة التحكم للرفع الجماعي والاستيراد والتصدير -->
     <div id="admin-panel" class="hidden bg-gray-900 border-b border-emerald-600/50 py-6 px-4">
-        <div class="max-w-xl mx-auto bg-gray-950 p-6 rounded-2xl border border-gray-800 shadow-2xl space-y-4">
+        <div class="max-w-2xl mx-auto bg-gray-950 p-6 rounded-2xl border border-gray-800 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3">
                 <h3 class="text-lg font-bold text-emerald-400 flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle"></i> إضافة لعبة جديدة للمتجر
+                    <i class="fa-solid name fa-database"></i> إدارة الـ 182 لعبة بكل سهولة
                 </h3>
                 <button onclick="toggleAdminPanel()" class="text-gray-400 hover:text-white text-2xl cursor-pointer">&times;</button>
             </div>
-            <form onsubmit="addNewGame(event)" class="space-y-3">
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">اسم اللعبة</label>
-                    <input type="text" id="new-game-name" required placeholder="اسم اللعبة" class="w-full bg-gray-900 text-white border border-gray-700 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-emerald-500">
-                </div>
-                <div>
-                    <label class="block text-xs text-gray-400 mb-1">رابط صورة الغلاف (URL)</label>
-                    <input type="url" id="new-game-image" required placeholder="https://..." class="w-full bg-gray-900 text-white border border-gray-700 rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-emerald-500">
-                </div>
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition cursor-pointer text-sm">
-                    حفظ وإضافة اللعبة
+
+            <!-- رفع صور متعددة دفعة واحدة -->
+            <div class="p-4 bg-gray-900 rounded-xl border border-gray-800">
+                <label class="block text-sm font-bold text-gray-200 mb-2">📁 رفع صور متعددة من جهازك دفعة واحدة:</label>
+                <input type="file" id="batch-file-input" multiple accept="image/*" class="block w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-500 cursor-pointer mb-3">
+                <button onclick="uploadBatchFast()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition cursor-pointer text-xs">
+                    إضافة الصور المحددة للمتجر فوراً
                 </button>
-            </form>
+            </div>
+
+            <!-- استيراد ملف الحفظ السابق (JSON) -->
+            <div class="p-4 bg-gray-900 rounded-xl border border-gray-800">
+                <label class="block text-sm font-bold text-gray-200 mb-2">📥 استيراد ملف الحفظ الجاهز:</label>
+                <input type="file" id="import-file-input" accept=".json" onchange="importGameData(event)" class="block w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer">
+            </div>
+
+            <!-- تصدير الحفظ -->
+            <button onclick="exportCode()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 rounded-xl transition cursor-pointer text-sm flex items-center justify-center gap-2">
+                <i class="fa-solid fa-file-arrow-down"></i> تصدير وحفظ كل الألعاب (تحميل ملف البيانات)
+            </button>
         </div>
     </div>
 
@@ -85,7 +92,7 @@
         <div id="games-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"></div>
         <div id="no-results" class="hidden text-center py-16 text-gray-400">
             <i class="fa-solid fa-circle-exclamation text-4xl mb-2 text-gray-600"></i>
-            <p class="text-lg">لم يتم العثور على ألعاب بهذا الاسم</p>
+            <p class="text-lg">لا توجد ألعاب مضافة حالياً، يجدر بك رفع الصور من خيار الإدارة بالأعلى</p>
         </div>
     </main>
 
@@ -112,104 +119,171 @@
     </footer>
 
     <script>
-        // جميع الألعاب والصور المستخرجة مباشرة من ملفك ومثبتة نهائياً داخل الكود[span_1](start_span)[span_1](end_span)
-        const defaultGames = [
-            { id: 1792571409644, name: "photo_100", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+100" },
-            { id: 1792571409643, name: "photo_99", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+99" },
-            { id: 1792571409642, name: "photo_98", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+98" },
-            { id: 1792571409641, name: "photo_97", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+97" },
-            { id: 1792571409639, name: "photo_96", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+96" },
-            { id: 1792571409638, name: "photo_95", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+95" },
-            { id: 1792571409637, name: "photo_94", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+94" },
-            { id: 1792571409636, name: "photo_93", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+93" },
-            { id: 1792571409635, name: "photo_92", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+92" },
-            { id: 1792571409634, name: "photo_91", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+91" },
-            { id: 1792571409633, name: "photo_90", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+90" },
-            { id: 1792571409631, name: "photo_89", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+89" },
-            { id: 1792571409630, name: "photo_88", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+88" },
-            { id: 1792571409629, name: "photo_87", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+87" },
-            { id: 1792571409628, name: "photo_86", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+86" },
-            { id: 1792571409627, name: "photo_85", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+85" },
-            { id: 1792571409626, name: "photo_84", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+84" },
-            { id: 1792571409625, name: "photo_83", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+83" },
-            { id: 1792571409622, name: "photo_82", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+82" },
-            { id: 1792571409620, name: "photo_81", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+81" },
-            { id: 1792571409618, name: "photo_80", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+80" },
-            { id: 1792571409616, name: "photo_79", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+79" },
-            { id: 1792571409613, name: "photo_78", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+78" },
-            { id: 1792571409611, name: "photo_77", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+77" },
-            { id: 1792571409609, name: "photo_76", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+76" },
-            { id: 1792571409607, name: "photo_75", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+75" },
-            { id: 1792571409604, name: "photo_74", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+74" },
-            { id: 1792571409602, name: "photo_73", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+73" },
-            { id: 1792571409600, name: "photo_72", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+72" },
-            { id: 1792571409598, name: "photo_71", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+71" },
-            { id: 1792571409595, name: "photo_70", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+70" },
-            { id: 1792571409593, name: "photo_69", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+69" },
-            { id: 1792571409591, name: "photo_68", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+68" },
-            { id: 1792571409588, name: "photo_67", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+67" },
-            { id: 1792571409586, name: "photo_66", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+66" },
-            { id: 1792571409584, name: "photo_65", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+65" },
-            { id: 1792571409582, name: "photo_64", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+64" },
-            { id: 1792571409579, name: "photo_63", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+63" },
-            { id: 1792571409577, name: "photo_62", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+62" },
-            { id: 1792571409575, name: "photo_61", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+61" },
-            { id: 1792571409573, name: "photo_60", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+60" },
-            { id: 1792571409570, name: "photo_59", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+59" },
-            { id: 1792571409568, name: "photo_58", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+58" },
-            { id: 1792571409566, name: "photo_57", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+57" },
-            { id: 1792571409564, name: "photo_56", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+56" },
-            { id: 1792571409561, name: "photo_55", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+55" },
-            { id: 1792571409559, name: "photo_54", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+54" },
-            { id: 1792571409557, name: "photo_53", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+53" },
-            { id: 1792571409555, name: "photo_52", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+52" },
-            { id: 1792571409552, name: "photo_51", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+51" },
-            { id: 1792571409550, name: "photo_50", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+50" },
-            { id: 1792571409548, name: "photo_49", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+49" },
-            { id: 1792571409545, name: "photo_48", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+48" },
-            { id: 1792571409543, name: "photo_47", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+47" },
-            { id: 1792571409541, name: "photo_46", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+46" },
-            { id: 1792571409538, name: "photo_45", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+45" },
-            { id: 1792571409536, name: "photo_44", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+44" },
-            { id: 1792571409533, name: "photo_43", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+43" },
-            { id: 1792571409531, name: "photo_42", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+42" },
-            { id: 1792571409529, name: "photo_41", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+41" },
-            { id: 1792571409527, name: "photo_40", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+40" },
-            { id: 1792571409524, name: "photo_39", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+39" },
-            { id: 1792571409522, name: "photo_38", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+38" },
-            { id: 1792571409520, name: "photo_37", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+37" },
-            { id: 1792571409517, name: "photo_36", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+36" },
-            { id: 1792571409515, name: "photo_35", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+35" },
-            { id: 1792571409513, name: "photo_34", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+34" },
-            { id: 1792571409511, name: "photo_33", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+33" },
-            { id: 1792571409508, name: "photo_32", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+32" },
-            { id: 1792571409506, name: "photo_31", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+31" },
-            { id: 1792571409504, name: "photo_30", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+30" },
-            { id: 1792571409501, name: "photo_29", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+29" },
-            { id: 1792571409499, name: "photo_28", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+28" },
-            { id: 1792571409497, name: "photo_27", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+27" },
-            { id: 1792571409495, name: "photo_26", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+26" },
-            { id: 1792571409492, name: "photo_25", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+25" },
-            { id: 1792571409490, name: "photo_24", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+24" },
-            { id: 1792571409488, name: "photo_23", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+23" },
-            { id: 1792571409486, name: "photo_22", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+22" },
-            { id: 1792571409483, name: "photo_21", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+21" },
-            { id: 1792571409481, name: "photo_20", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+20" },
-            { id: 1792571409479, name: "photo_19", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+19" },
-            { id: 1792571409476, name: "photo_18", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+18" },
-            { id: 1792571409474, name: "photo_17", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+17" },
-            { id: 1792571409472, name: "photo_16", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+16" },
-            { id: 1792571409470, name: "photo_15", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+15" },
-            { id: 1792571409467, name: "photo_14", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+14" },
-            { id: 1792571409465, name: "photo_13", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+13" },
-            { id: 1792571409463, name: "photo_12", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+12" },
-            { id: 1792571409461, name: "photo_11", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+11" },
-            { id: 1792571409458, name: "photo_10", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+10" },
-            { id: 1792571409456, name: "photo_9", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+9" },
-            { id: 1792571409454, name: "photo_8", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+8" },
-            { id: 1792571409451, name: "photo_7", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+7" },
-            { id: 1792571409449, name: "photo_6", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+6" },
-            { id: 1792571409447, name: "photo_5", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+5" },
-            { id: 1792571409444, name: "photo_4", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+4" },
-            { id: 1792571409442, name: "photo_3", image: "https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game+3" },
-            { id: 1792571409439, name: "photo_2", image: "https://via.placeholder.com/300x400/1e29
+        let games = JSON.parse(localStorage.getItem('abu_younis_182_games')) || [];
+        let cart = [];
+
+        function toggleAdminPanel() {
+            document.getElementById('admin-panel').classList.toggle('hidden');
+        }
+
+        // رفع صور متعددة دفعة واحدة وبسرعة فائقة باستخدام Object URLs
+        function uploadBatchFast() {
+            const input = document.getElementById('batch-file-input');
+            const files = input.files;
+            
+            if (files.length === 0) return alert('الرجاء اختيار الصور أولاً!');
+
+            Array.from(files).forEach((file, idx) => {
+                const imageUrl = URL.createObjectURL(file);
+                const gameName = file.name.replace(/\.[^/.]+$/, ""); 
+
+                games.unshift({
+                    id: Date.now() + idx,
+                    name: gameName,
+                    image: imageUrl
+                });
+            });
+
+            saveAndRender();
+            input.value = '';
+            toggleAdminPanel();
+            alert(`تمت إضافة ${files.length} صورة بنجاح إلى المتجر!`);
+        }
+
+        // استيراد ملف حفظ سابق
+        function importGameData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedGames = JSON.parse(e.target.result);
+                    if (Array.isArray(importedGames)) {
+                        games = importedGames;
+                        saveAndRender();
+                        alert('تم استيراد الألعاب بنجاح!');
+                        toggleAdminPanel();
+                    } else {
+                        alert('ملف غير صالح!');
+                    }
+                } catch (err) {
+                    alert('خطأ في قراءة الملف!');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function deleteGame(id) {
+            if(confirm('هل أنت متأكد من حذف هذه اللعبة؟')) {
+                games = games.filter(g => g.id !== id);
+                cart = cart.filter(c => c.id !== id);
+                saveAndRender();
+                updateCartUI();
+            }
+        }
+
+        function saveAndRender() {
+            localStorage.setItem('abu_younis_182_games', JSON.stringify(games));
+            renderGames();
+        }
+
+        function exportCode() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(games));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "abu_younis_all_games.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            alert('تم تحميل ملف الحفظ بنجاح!');
+        }
+
+        function renderGames(data = games) {
+            const grid = document.getElementById('games-grid');
+            const noRes = document.getElementById('no-results');
+            
+            if (data.length === 0) {
+                grid.innerHTML = '';
+                noRes.classList.remove('hidden');
+                return;
+            }
+            noRes.classList.add('hidden');
+
+            grid.innerHTML = data.map(game => {
+                const inCart = cart.some(item => item.id === game.id);
+                return `
+                <div class="bg-gray-900 p-3.5 rounded-2xl shadow-lg border border-gray-800 transition hover:border-blue-500 flex flex-col justify-between relative group">
+                    <button onclick="deleteGame(${game.id})" title="حذف اللعبة" class="absolute top-2 left-2 z-10 bg-red-600/90 hover:bg-red-600 text-white text-xs px-2 py-1 rounded-lg font-bold transition cursor-pointer">
+                        <i class="fa-solid fa-trash"></i> حذف
+                    </button>
+
+                    <div>
+                        <div class="w-full h-52 bg-gray-950 rounded-xl mb-3 overflow-hidden flex items-center justify-center border border-gray-800/80">
+                            <img src="${game.image}" alt="${game.name}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400/1e293b/ffffff?text=PS4+Game';">
+                        </div>
+                        <h3 class="font-bold text-xs md:text-sm mb-3 text-white line-clamp-2 h-9 leading-tight">${game.name}</h3>
+                    </div>
+                    <button 
+                        onclick="addToCart(${game.id})" 
+                        ${inCart ? 'disabled' : ''}
+                        class="w-full py-2 rounded-xl text-xs md:text-sm font-bold transition ${
+                            inCart 
+                            ? 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700' 
+                            : 'bg-blue-600 hover:bg-blue-500 text-white cursor-pointer shadow-md shadow-blue-600/30'
+                        }">
+                        ${inCart ? 'مضافة بالسلة' : 'إضافة للسلة'}
+                    </button>
+                </div>
+            `;
+            }).join('');
+        }
+
+        function filterGames() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const filtered = games.filter(g => g.name.toLowerCase().includes(query));
+            renderGames(filtered);
+        }
+
+        function toggleCart() { 
+            document.getElementById('cart-modal').classList.toggle('hidden'); 
+        }
+
+        function addToCart(id) {
+            const game = games.find(g => g.id === id);
+            if (!cart.some(item => item.id === id)) {
+                cart.push(game);
+                updateCartUI();
+                filterGames(); 
+            }
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const items = document.getElementById('cart-items');
+            items.innerHTML = cart.length > 0 ? cart.map((g) => `
+                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                    <span class="text-sm font-medium text-gray-200">${g.name}</span>
+                    <button onclick="removeFromCart(${g.id})" class="text-red-400 hover:text-red-300 text-xs cursor-pointer px-2.5 py-1 bg-gray-800 rounded-lg border border-gray-700">حذف</button>
+                </div>
+            `).join('') : '<p class="text-gray-500 text-center py-10">السلة فارغة حالياً</p>';
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+            filterGames(); 
+        }
+
+        // إرسال روابط الصور فقط عبر الواتساب عند الطلب
+        function sendToWhatsApp() {
+            if(cart.length === 0) return alert('السلة فارغة!');
+            const phone = "9647726541533"; 
+            const message = "مرحباً متجر أبو يونس، أود طلب الألعاب حسب الصور التالية:\n\n" + cart.map((g, index) => `${index + 1}. ${g.image}`).join('\n\n');
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        renderGames();
+    </script>
+</body>
+</html>
